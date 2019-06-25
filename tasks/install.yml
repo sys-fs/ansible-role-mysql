@@ -33,7 +33,7 @@
     question: mysql-community-server/re-root-pass
     vtype: password
     value: '{{ mysql_root_password }}'
-  when:_set_root_password is changed
+  when: _set_root_password is changed
 
 - name: Install MySQL packages
   apt:
