@@ -1,0 +1,38 @@
+---
+# defaults file for ansible-role-mysql
+mysql_packages:
+  - mysql-community-server
+  - python-mysqldb
+
+mysql_version: 5.7
+
+mysql_root_password: hunter2
+
+mysql_bind_address: 127.0.0.1
+mysql_port: 3306
+mysql_sql_mode: ''
+
+mysql_innodb_buffer_pool_size: 1G
+mysql_innodb_log_file_size: 256M
+mysql_innodb_flush_log_at_trx_commit: 1
+mysql_innodb_flush_method: O_DIRECT
+
+mysql_server_id: 1
+mysql_expire_logs_days: 7
+mysql_max_binlog_size: 100M
+
+mysql_extra_variables: []
+#  - name: example
+#    value: 10M
+
+mysql_databases: []
+#  - name: example
+#    encoding: utf8
+#    collation: utf_bin
+#    binlog: True
+
+mysql_users: []
+#  - name: example
+#    host: 127.0.0.1
+#    password: hunter2
+#    priv: 'example.*:ALL'

@@ -1,0 +1,55 @@
+---
+- name: Check if innodb_log_file_size is to be modified
+  lineinfile:
+    path: /etc/mysql/mysql.conf.d/mysqld.cnf
+    line: 'innodb_log_file_size = {{ mysql_innodb_log_file_size }}'
+  check_mode: true
+  register: _innodb_log_file_size
+
+- name: Configure MySQL
+  template:
+    src: mysqld.cnf.j2
+    dest: /etc/mysql/mysql.conf.d/mysqld.cnf
+  notify: Restart MySQL
+
+- name: Set innodb_fast_shutdown to 0
+  mysql_variables:
+    variable: innodb_fast_shutdown
+    value: '0'
+    login_user: root
+    login_password: '{{ mysql_root_password }}'
+  when: _innodb_log_file_size is changed
+
+- name: Stop MySQL
+  service:
+    name: mysql
+    state: stopped
+  when: _innodb_log_file_size is changed
+
+- name: Delete innodb logs
+  file:
+    name: '/var/lib/mysql/{{ item }}'
+    state: absent
+  with_items:
+    - ib_logfile0
+    - ib_logfile1
+  when: _innodb_log_file_size is changed
+
+- name: Create databases
+  mysql_db:
+    name: '{{ item.name }}'
+    encoding: '{{ item.encoding | default("utf8") }}'
+    collation: '{{ item.collation | default("utf_bin") }}'
+    login_user: root
+    login_password: '{{ mysql_root_password }}'
+  with_items: '{{ mysql_databases }}'
+
+- name: Create users
+  mysql_user:
+    name: '{{ item.name }}'
+    host: '{{ item.host | default("127.0.0.1") }}'
+    password: '{{ item.password }}'
+    priv: '{{ item.priv }}'
+    login_user: root
+    login_password: '{{ mysql_root_password }}'
+  with_items: '{{ mysql_users }}'

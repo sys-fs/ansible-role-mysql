@@ -1,0 +1,35 @@
+---
+- name: Import MySQL key
+  apt_key:
+    keyserver: pgp.mit.edu
+    id: A4A9406876FCBD3C456770C88C718D3B5072E1F5
+
+- name: Enable MySQL repo
+  apt_repository:
+    repo: >
+      deb http://repo.mysql.com/apt/{{ ansible_distribution | lower }}/ {{ ansible_distribution_release }}
+      mysql-{{ mysql_version }}
+
+- name: Set root MySQL password
+  debconf:
+    name: mysql-community-server
+    question: mysql-community-server/root-pass
+    vtype: password
+    value: '{{ mysql_root_password }}'
+
+- name: Confirm root MySQL password
+  debconf:
+    name: mysql-community-server
+    question: mysql-community-server/re-root-pass
+    vtype: password
+    value: '{{ mysql_root_password }}'
+
+- name: Install MySQL packages
+  apt:
+    name: '{{ mysql_packages }}'
+
+- name: Ensure MySQL is enabled and running
+  service:
+    name: mysql
+    state: started
+    enabled: True

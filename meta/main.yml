@@ -1,0 +1,27 @@
+---
+galaxy_info:
+  author: Thomas Mannay
+  description: Install and configure MySQL on Debian and Ubuntu.
+
+  license: MIT
+
+  min_ansible_version: 2.6
+
+  platforms:
+    - name: Debian
+      versions:
+        - jessie
+        - stretch
+    - name: Ubuntu
+      versions:
+        - xenial
+        - bionic
+
+  galaxy_tags:
+    - mysql
+    - database
+    - development
+    - debian
+    - ubuntu
+
+dependencies: []
