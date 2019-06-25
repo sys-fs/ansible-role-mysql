@@ -1,4 +1,8 @@
 ---
+- name: Ensure gnupg is installed
+  apt:
+    name: gnupg
+
 - name: Import MySQL key
   apt_key:
     keyserver: pgp.mit.edu
