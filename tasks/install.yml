@@ -1,12 +1,11 @@
 ---
-- name: Ensure gnupg is installed
+- name: Ensure ca-certificates is installed
   apt:
-    name: gnupg
+    name: ca-certificates
 
 - name: Import MySQL key
   apt_key:
-    keyserver: pgp.mit.edu
-    id: A4A9406876FCBD3C456770C88C718D3B5072E1F5
+    url: 'https://repo.mysql.com/RPM-GPG-KEY-mysql'
 
 - name: Enable MySQL repo
   apt_repository:
