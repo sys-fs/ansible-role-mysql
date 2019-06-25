@@ -1,7 +1,8 @@
 ---
 - name: Ensure ca-certificates is installed
   apt:
-    name: ca-certificates
+    name:
+      - ca-certificates
 
 - name: Import MySQL key
   apt_key:
@@ -13,9 +14,10 @@
       deb http://repo.mysql.com/apt/{{ ansible_distribution | lower }}/ {{ ansible_distribution_release }}
       mysql-{{ mysql_version }}
 
-- name: Gather package facts
-  package_facts:
-    manager: auto
+- name: Check if MySQL is already installed
+  stat:
+    path: /var/lib/mysql
+  register: _installed
 
 - name: Set root MySQL password
   debconf:
@@ -23,9 +25,7 @@
     question: mysql-community-server/root-pass
     vtype: password
     value: '{{ mysql_root_password }}'
-  when: item not in ansible_facts.packages
-  with_items: '{{ mysql_packages }}'
-  register: _set_root_password
+  when: _installed.stat.isdir is not defined
 
 - name: Confirm root MySQL password
   debconf:
@@ -33,7 +33,7 @@
     question: mysql-community-server/re-root-pass
     vtype: password
     value: '{{ mysql_root_password }}'
-  when: _set_root_password is changed
+  when: _installed.stat.isdir is not defined
 
 - name: Install MySQL packages
   apt:
