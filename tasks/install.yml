@@ -13,12 +13,19 @@
       deb http://repo.mysql.com/apt/{{ ansible_distribution | lower }}/ {{ ansible_distribution_release }}
       mysql-{{ mysql_version }}
 
+- name: Gather package facts
+  package_facts:
+    manager: auto
+
 - name: Set root MySQL password
   debconf:
     name: mysql-community-server
     question: mysql-community-server/root-pass
     vtype: password
     value: '{{ mysql_root_password }}'
+  when: item not in ansible_facts.packages
+  with_items: '{{ mysql_packages }}'
+  register: _set_root_password
 
 - name: Confirm root MySQL password
   debconf:
@@ -26,6 +33,7 @@
     question: mysql-community-server/re-root-pass
     vtype: password
     value: '{{ mysql_root_password }}'
+  when:_set_root_password is changed
 
 - name: Install MySQL packages
   apt:
