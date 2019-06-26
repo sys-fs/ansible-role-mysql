@@ -35,6 +35,12 @@
     - ib_logfile1
   when: _innodb_log_file_size is changed
 
+- name: Start MySQL
+  service:
+    name: mysql
+    state: started
+  when: _innodb_log_file_size is changed
+
 - name: Create databases
   mysql_db:
     name: '{{ item.name }}'
