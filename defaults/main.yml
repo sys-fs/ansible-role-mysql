@@ -28,7 +28,7 @@ mysql_extra_variables: []
 mysql_databases: []
 #  - name: example
 #    encoding: utf8
-#    collation: utf_bin
+#    collation: utf8_general_ci
 #    binlog: True
 
 mysql_users: []

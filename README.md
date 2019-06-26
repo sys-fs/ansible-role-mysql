@@ -60,7 +60,7 @@ Add arbitrary values to the MySQL config.
 	mysql_databases: []
 	#  - name: example
 	#    encoding: utf8
-	#    collation: utf_bin
+	#    collation: utf8_general_ci
 	#    binlog: True
 
 List of databases to create. The example values of `encoding`, `collation`, and

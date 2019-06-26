@@ -45,7 +45,7 @@
   mysql_db:
     name: '{{ item.name }}'
     encoding: '{{ item.encoding | default("utf8") }}'
-    collation: '{{ item.collation | default("utf_bin") }}'
+    collation: '{{ item.collation | default("utf8_general_ci") }}'
     login_user: root
     login_password: '{{ mysql_root_password }}'
   with_items: '{{ mysql_databases }}'
