@@ -1,6 +1,7 @@
 ---
 galaxy_info:
   author: Thomas Mannay
+  role_name: mysql
   description: Install and configure MySQL on Debian and Ubuntu.
 
   license: MIT
