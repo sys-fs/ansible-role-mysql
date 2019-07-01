@@ -53,7 +53,7 @@
 - name: Create users
   mysql_user:
     name: '{{ item.name }}'
-    host: '{{ item.host | default("127.0.0.1") }}'
+    host: '{{ item.host | default("localhost") }}'
     password: '{{ item.password }}'
     priv: '{{ item.priv }}'
     login_user: root

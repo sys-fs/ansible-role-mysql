@@ -68,7 +68,7 @@ List of databases to create. The example values of `encoding`, `collation`, and
 
 	mysql_users: []
 	#  - name: example
-	#    host: 127.0.0.1
+	#    host: localhost
 	#    password: hunter2
 	#    priv: 'example.*:ALL'
 
